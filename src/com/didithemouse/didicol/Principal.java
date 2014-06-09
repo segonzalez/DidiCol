@@ -136,12 +136,13 @@ public class Principal extends Activity {
 		
 		//PARA TESTEAR!!!
 		//setCargarState(true);
+		/*
 		setComenzarState(true);
 		int randint = 100000+new Random().nextInt(100000);
 		etNumber.setText(randint+"");
 		etName.setText(Build.SERIAL);
 		etGroup.setText("9");
-		
+		*/
 		//etNumber.setText("2067637549");
     }
     
