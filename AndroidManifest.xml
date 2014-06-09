@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.didithemouse.didicol">
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <supports-screens 
+    android:smallScreens="false" 
+    android:largeScreens="true"
+    android:xlargeScreens="true"  
+    android:normalScreens="true" 
+    android:anyDensity="true"
+	/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:largeHeap="true" android:debuggable="true" android:hardwareAccelerated="true">
+        <activity android:name="com.didithemouse.didicol.Principal"
+                  android:label="@string/app_name" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:label="DescriptionActivity" android:name="DescriptionActivity" android:screenOrientation="landscape"></activity>
+        <activity android:label="CreateActivity" android:name="CreateActivity" android:screenOrientation="landscape"></activity>
+        <activity android:label="WriteActivity" android:name="WriteActivity" android:screenOrientation="landscape"></activity>
+      <activity android:label="PresentationActivity" android:name="PresentationActivity" android:screenOrientation="landscape"></activity>
+	 <activity android:label="ArgumentatorActivity" android:name="ArgumentatorActivity" android:screenOrientation="landscape"></activity>
+			
+		<activity android:label="InicioActivity" android:name=".etapas.InicioActivity" android:screenOrientation="landscape"></activity>
+		<activity android:label="ChinatownActivity" android:name=".etapas.ChinatownActivity" android:screenOrientation="landscape"></activity>
+		<activity android:label="ConeyActivity" android:name=".etapas.ConeyActivity" android:screenOrientation="landscape"></activity>
+    	<activity android:label="EmpireStateActivity" android:name=".etapas.EmpireStateActivity" android:screenOrientation="landscape"></activity>
+		
+    	<activity android:label="EndingActivity" android:name="EndingActivity" android:screenOrientation="landscape"></activity>
+    	
+    </application>
+
+	<uses-sdk android:minSdkVersion="11" 
+          android:targetSdkVersion="11"/>
+	
+</manifest>

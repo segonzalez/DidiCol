@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DidiCol</string>
+    <style name="ButtonText">
+	    <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:textColor">#ffffff</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:layout_margin">5dp</item>
+	    <item name="android:textSize">20dp</item>
+	    <item name="android:textStyle">bold</item>
+	    <item name="android:shadowColor">#000000</item>
+	    <item name="android:shadowDx">1</item>
+	    <item name="android:shadowDy">1</item>
+	    <item name="android:shadowRadius">2</item>
+	</style>
+	
+
+    <string name="didielraton">Didi el Ratón</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="volveralmapa">Volver al mapa</string>
+    <string name="visitarlugar">Ir</string>
+    <string name="lugaresvisitados">Lugares visitados</string>
+    <string name="comenzar">Comenzar historia</string>
+    <string name="volveradiapositivas">Volver a diapositivas</string>
+    <string name="chinatown">Chinatown</string>
+    <string name="coney">Coney Island</string>
+    <string name="outof">de</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="empirestate">Edificio Empire State</string>
+    <string name="reiniciar">Reiniciar</string>
+    <string name="volveraver">Volver a ver</string>
+	
+    <string name="dibujos">Dibujos</string>
+    <string name="nueva_pagina">Nueva página</string>
+    <string name="termine">Terminé</string>
+    <string name="historiaIntro">Erase una vez un ratón, un roedor 
+Que se llamaba Didi y vivía en Nueva York
+Abajo en el metro, arriba de las vías, 
+tenía su casa, donde feliz vivía
+
+Didi era pobre, fortuna no poseía 
+Pero no le importaba, porque siempre se divertía 
+Tenía su libertad, y para él esto era
+El tesoro más valioso que existía en la tierra</string>
+    <string name="historiaChinatown">Didi siempre tenía hambre de tanto recorrer
+Y le encantaba pensar en lo que podía comer
+¿Un curry hindú? ¿Un taco mexicano?
+¿Una hamburguesa con queso o un sandwich cubano?
+
+No: lo que más le tentaba era un gran banquete chino
+Así que fue a Mott Street, en el downtown neoyorquino
+Después de un Pato pekín con panqueques al lado
+Se sentía satisfecho, y muy muy relajado</string>
+    <string name="historiaConey">Si tomaba el metro, Didi podía llegar
+A Coney Island, un lugar a la orilla del mar
+Justo ahí hay un parque de atracciones
+Con miles de actividades y divertidas diversiones
+
+Como helados, juegos, payasos extravagantes
+Y un desfile de sirenas muy despampanantes.
+Pero lejos, para Didi, la gran tentación era
+El ciclón, una gran montaña rusa hecha de madera
+
+Con subidas y bajadas muy empinadas
+Le provocaba sensaciones muy alocadas!</string>
+    <string name="historiaEmpire">El Edificio Empire State casi toca las estrellas
+        Un rascacielos con una silueta severa y bella
+        
+        Construido de acero, granito y cal,
+        Tiene 73 ascensores, 6500 ventanas, y su propio código postal
+        
+        Desde el piso 102, una vertiginosa altura
+        La ciudad abajo parece un mundo en miniatura.
+        
+        De noche hay un espectáuclo increíble en su torre
+        De luces que la cubren en brillantes colores.
+    </string>
+        <!--  
+    <string name="didielraton">A Mouse in New York</string>
+    <string name="pasaralmapa">Go to map</string>
+    <string name="volveralmapa">Back to the map</string>
+    <string name="visitarlugar">Visit this place</string>
+    <string name="lugaresvisitados">Visited places</string>
+    <string name="terminarderecorrer">Finish the trip</string>
+    <string name="pasaracompartir">Share</string>
+    <string name="comenzar">Begin story</string>
+    <string name="volveradiapositivas">Back to slides</string>
+    <string name="verpresentacion">Watch presentation</string>
+    <string name="estatua">Statue of Liberty</string>
+    <string name="puente">Chinatown</string>
+    <string name="bagelshop">Murray\'s Bagel Shop</string>
+    <string name="coney">Coney Island</string>
+    <string name="outof">out of 6</string>
+    <string name="cerrar">Exit</string>
+    <string name="empirestate">Empire State Building</string>
+    <string name="reiniciar">Restart</string>
+    <string name="volveraver">Watch Again</string>
+        -->
+        
+</resources>

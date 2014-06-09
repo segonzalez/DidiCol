@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_wood"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+    android:layout_width="fill_parent"
+        android:layout_height="63dip"
+        android:layout_margin="0dip"
+        android:background="@drawable/topleather"
+        android:orientation="horizontal" >
+
+        <Button
+             android:background="@drawable/blank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clickable="false"
+            android:id="@+id/buttonback" />
+        
+
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        >
+    <RelativeLayout
+        android:id="@+id/rellayoutnote"
+        android:layout_width="600dp"
+        android:layout_height="580dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/spiralnotebook" >
+
+        <TextView
+            android:id="@+id/instruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="50dp"
+            android:text="Lee el texto y argumenta en base a el."
+            android:textColor="#000000"
+            android:textStyle="bold|italic"
+            android:textSize="20sp"
+            android:textIsSelectable="false" />
+        
+        <FrameLayout
+            android:id="@+id/letraCanvas"
+            android:layout_width="480dp"
+            android:layout_height="580dp"
+            android:layout_below="@+id/instruction"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="74dp"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/inputText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textMultiLine"
+                android:maxHeight="575dp"
+                android:singleLine="false"
+                android:textColor="#000000"
+                android:textSize="25sp" >
+
+                <requestFocus />
+            </EditText>
+        </FrameLayout>
+
+</RelativeLayout>
+
+    
+    <RelativeLayout
+        android:id="@+id/rellayoutcanvas"
+        android:layout_width="600dp"
+        android:layout_height="580dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/rellayoutnote"
+        android:background="@drawable/spiralnotebook" >
+
+        
+        <FrameLayout
+            android:id="@+id/argCanvas"
+            android:layout_width="480dp"
+            android:layout_height="580dp"
+            android:layout_below="@+id/instruction"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="74dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/argText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:singleLine="false"
+                android:maxHeight="575dp"
+                android:textIsSelectable="false"
+                android:textColor="#000000"
+                android:textSize="25sp" >
+
+            </TextView>
+        </FrameLayout>
+
+</RelativeLayout>
+    
+    <Button
+            android:id="@+id/terminar"
+            android:splitMotionEvents="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/flecha"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/flecha" />
+</RelativeLayout>
+</LinearLayout>
