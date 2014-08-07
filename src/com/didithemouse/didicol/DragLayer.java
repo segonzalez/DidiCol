@@ -1,14 +1,14 @@
 package com.didithemouse.didicol;
 
-import com.didithemouse.didicol.network.NetEvent;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.didithemouse.didicol.network.NetEvent;
 
 /**
  * A ViewGroup that coordinates dragging across its dscendants.
@@ -118,7 +118,7 @@ public void onDrop(DragSource source, int x, int y, int xOffset, int yOffset, Dr
     
     this.updateViewLayout(v, lp);
     
-    upgradeNet(x- xOffset,y-yOffset,xOffset,yOffset,dragInfo);
+    upgradeNet(x- xOffset,y-yOffset,xOffset,yOffset,dragInfo,true);
     
     
 }
@@ -131,17 +131,18 @@ public void onDragEnter(DragSource source, int x, int y, int xOffset, int yOffse
 public void onDragOver(DragSource source, int x, int y, int xOffset, int yOffset,
         DragView dragView, Object dragInfo)
 {
-	upgradeNet(x - xOffset,y - yOffset,xOffset,yOffset,dragInfo);
+	upgradeNet(x - xOffset,y - yOffset,xOffset,yOffset,dragInfo,false);
 }
 
-public void upgradeNet(int left, int top, int xOffset, int yOffset, Object dragInfo){
+public void upgradeNet(int left, int top, int xOffset, int yOffset, Object dragInfo, boolean check){
 	String description = MochilaContents.getInstance().getDescription();
 	if(description == null || description.equals("")) return;
 	View v = (View) dragInfo;
     if(v instanceof ExtendedImageView)
     {
     	MochilaContents.getInstance().getNetManager().sendMessage(
-    		new NetEvent(left, top,xOffset,yOffset, ((ExtendedImageView) v).getDrawableID(),true));
+    		new NetEvent(left, top,xOffset,yOffset, ((ExtendedImageView) v).getDrawableID(),check));
+    	if(check && dropped != null) dropped.run();
     }
 }
 
@@ -197,21 +198,6 @@ public Rect estimateDropLocation(DragSource source, int x, int y, int xOffset, i
 {
     return null;
 }
-
-/**
- */
-// More methods
-
-/**
- * Show a string on the screen via Toast.
- * 
- * @param msg String
- * @return void
- */
-
-public void toast (String msg)
-{
-} // end toast
 
 
 } // end class

@@ -1,26 +1,11 @@
 package com.didithemouse.didicol.etapas;
 
 
-import com.didithemouse.didicol.DescriptionActivity;
-import com.didithemouse.didicol.DragController;
-import com.didithemouse.didicol.DragLayer;
-import com.didithemouse.didicol.DropTarget;
-import com.didithemouse.didicol.ExtendedImageView;
-import com.didithemouse.didicol.LogX;
-import com.didithemouse.didicol.Mochila;
-import com.didithemouse.didicol.MochilaContents;
-import com.didithemouse.didicol.Principal;
-import com.didithemouse.didicol.R;
-import com.didithemouse.didicol.ViewWrapper;
-import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
-
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +17,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.didithemouse.didicol.DescriptionActivity;
+import com.didithemouse.didicol.DragController;
+import com.didithemouse.didicol.DragLayer;
+import com.didithemouse.didicol.DropTarget;
+import com.didithemouse.didicol.ExtendedImageView;
+import com.didithemouse.didicol.LogX;
+import com.didithemouse.didicol.Mochila;
+import com.didithemouse.didicol.MochilaContents;
+import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
+import com.didithemouse.didicol.Principal;
+import com.didithemouse.didicol.R;
+import com.didithemouse.didicol.ViewWrapper;
+import com.didithemouse.didicol.network.NetEvent;
+import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 public abstract class EtapaActivity extends Activity implements View.OnTouchListener {
 
@@ -48,7 +48,7 @@ public abstract class EtapaActivity extends Activity implements View.OnTouchList
 	protected ImageView mochilaView;
 	protected ExtendedImageView[] arrastrables;
 	protected LayoutParams[] posiciones;
-	protected final static int maxObjetos = 4;
+	protected final static int maxObjetos = 3;
 	protected int numItems = 0;
 	public static String title;
 	protected ImageView badge;
@@ -249,7 +249,7 @@ public abstract class EtapaActivity extends Activity implements View.OnTouchList
 
 		setObjects();
 
-		for (int i = 0; i < drawables.length; i++) {
+		for (int i = 0; i < drawables.length && i < maxObjetos; i++) {
 			if (posiciones[i] != null) {
 				arrastrables[i] = new ExtendedImageView(this.getApplicationContext(),drawables[i],1,etapa);
 				arrastrables[i].setImageResource(drawables[i]);
@@ -298,9 +298,10 @@ public abstract class EtapaActivity extends Activity implements View.OnTouchList
 	{
  		numItems++;
 		int counter = 0;
-		for (int i = 0; i < maxObjetos; i ++)
+		// -1 porque son solo 2
+		for (int i = 0; i < maxObjetos-1; i++)
 		{if (arrastrables[i] == null) counter++;}
-		if (numItems >= maxObjetos - counter)
+		if (numItems >= maxObjetos - counter-1)
 		{
 			volver.setVisibility(View.VISIBLE);
 			volver.setColorFilter(0);

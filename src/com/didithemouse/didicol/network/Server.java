@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import com.didithemouse.didicol.MochilaContents;
-import com.didithemouse.didicol.network.NetEvent.EventEnum;
-
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.didithemouse.didicol.MochilaContents;
+import com.didithemouse.didicol.network.NetEvent.EventEnum;
 
 
 public class Server{
@@ -20,7 +20,6 @@ public class Server{
 	Socket[] client = null;
 	MochilaContents mc = MochilaContents.getInstance();
 	int port = 3389;
-	String hostIP = "";
 
 	int kid = 0;
 	
@@ -33,9 +32,8 @@ public class Server{
 	
 	ObjectInputStream objectInputStreams[] = null;
 	
-	public Server(int _port, String _hostIP, PollListener _pollListener){
+	public Server(int _port, PollListener _pollListener){
 		port = _port;
-		hostIP = _hostIP;
 		client = new Socket[2];
 		objectInputStreams = new ObjectInputStream[2];
 		clientPoll= new ArrayList<AsyncTask<Integer,Object, Void>>();

@@ -1,14 +1,7 @@
 package com.didithemouse.didicol;
 
-import java.util.Random;
 
-import com.didithemouse.didicol.Saver.ActivityEnum;
-import com.didithemouse.didicol.etapas.ChinatownActivity;
-import com.didithemouse.didicol.etapas.ConeyActivity;
-import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
-import com.didithemouse.didicol.etapas.InicioActivity;
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +11,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.didithemouse.didicol.Saver.ActivityEnum;
+import com.didithemouse.didicol.etapas.ChinatownActivity;
+import com.didithemouse.didicol.etapas.ConeyActivity;
+import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
+import com.didithemouse.didicol.etapas.InicioActivity;
+import com.didithemouse.didicol.network.NetEvent;
+import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 public class Principal extends Activity {
   
@@ -53,13 +55,13 @@ public class Principal extends Activity {
 		etGroup.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_DATETIME_VARIATION_NORMAL);
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 			
-		View bg = findViewById(R.id.bg);
-		bg.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
+		View bg = findViewById(R.id.root);
+		bg.setOnTouchListener(new View.OnTouchListener() {
+		    @Override
+		    public boolean onTouch(View v, MotionEvent event) {
 				hideSoftKeyboard();
 				updateButtons();
+				return false;
 			}
 		});		
 		
@@ -97,9 +99,8 @@ public class Principal extends Activity {
 				ActivityEnum result = Saver.loadPresentation();
 				if(result == ActivityEnum.END){
 					MochilaContents.getInstance().hasLoaded=true;
-					Intent intent = new Intent(v.getContext().getApplicationContext(), PresentationActivity.class);
-				
-				//LogX.i("Restart","Se ha vuelto a cargar la aplicación.");
+					Intent intent = new Intent(v.getContext().getApplicationContext(), LoadActivity.class);
+					
 					startActivity(intent);
 					finish();
 		        }
@@ -136,12 +137,23 @@ public class Principal extends Activity {
 		
 		//PARA TESTEAR!!!
 		//setCargarState(true);
-		/*
 		setComenzarState(true);
 		int randint = 100000+new Random().nextInt(100000);
 		etNumber.setText(randint+"");
-		etName.setText(Build.SERIAL);
+		if(Build.SERIAL.equals("c1607f91d8d70cf"))
+			etName.setText("Tablet05");
+		else if(Build.SERIAL.equals("c1607850186e111"))
+			etName.setText("Tablet06");
+		else
+			etName.setText("Tablet10");
 		etGroup.setText("9");
+		
+		//mc.setTextEdited(0, "hola\n");mc.setTextEdited(1, "como\n");mc.setTextEdited(2, "estas\n");
+		/*
+		mc.setEtapas(EtapaEnum.CHINA, EtapaEnum.CONEY, EtapaEnum.INICIO);
+		//mc.hasLoaded =true;
+		startActivity(new Intent(getApplicationContext(), ArgumentatorActivity.class));
+		finish();
 		*/
 		//etNumber.setText("2067637549");
     }
@@ -218,7 +230,7 @@ public class Principal extends Activity {
 	boolean isWaiting = false;
 	boolean kid1ready=false, kid2ready = false;
     public void proceed(){
-    	decidirEtapas(mc.getKidNumber(),mc.getNetManager().getClientKid(0),mc.getNetManager().getClientKid(1));
+    	decidirEtapas(mc.getKidNumber(),mc.getNetManager().getKid(0),mc.getNetManager().getKid(1));
 		EtapaEnum etapa = mc.getEtapa(mc.LECTURA);
 		
 		Intent intent = null;
@@ -230,6 +242,7 @@ public class Principal extends Activity {
 			intent = new Intent(comenzar.getContext().getApplicationContext(), ConeyActivity.class);
 		
 		startActivity(intent);
+		//startActivity(new Intent(getApplicationContext(), CorrectionActivity.class));
     	finish();
     }
     
@@ -247,28 +260,15 @@ public class Principal extends Activity {
 		else if (num > c1 && num>c2) mc.setEtapas(EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
 		else 	                     mc.setEtapas(EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
 		
-		if    (c1 < c2 && c1 < num) mc.getNetManager().setClientEtapas(0, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
-		else if (c1 > c2 && c1>num) mc.getNetManager().setClientEtapas(0, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
-		else                        mc.getNetManager().setClientEtapas(0, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
+		if    (c1 < c2 && c1 < num) mc.getNetManager().setKidEtapas(0, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
+		else if (c1 > c2 && c1>num) mc.getNetManager().setKidEtapas(0, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
+		else                        mc.getNetManager().setKidEtapas(0, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
 								
-		if(c2 < c1 && c2 < num)     mc.getNetManager().setClientEtapas(1, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
-		else if (c2 > c1 && c2>num) mc.getNetManager().setClientEtapas(1, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
-		else                        mc.getNetManager().setClientEtapas(1, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
+		if(c2 < c1 && c2 < num)     mc.getNetManager().setKidEtapas(1, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
+		else if (c2 > c1 && c2>num) mc.getNetManager().setKidEtapas(1, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
+		else                        mc.getNetManager().setKidEtapas(1, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
 			
     	Log.d("netconnect", "kid: " + num + " c1: " + c1 + " c2 " + c2+ " Etapa: "+ mc.getEtapa(mc.LECTURA).toString() );
-
-    	/*    	if(num < c1 && num < c2)     mc.setEtapas(EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
-		else if (num > c1 && num>c2) mc.setEtapas(EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
-		else 	                     mc.setEtapas(EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
-		
-		if    (c1 < c2 && c1 < num) mc.getNetManager().setClientEtapas(0, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
-		else if (c1 > c2 && c1>num) mc.getNetManager().setClientEtapas(0, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
-		else                        mc.getNetManager().setClientEtapas(0, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
-								
-		if(c2 < c1 && c2 < num)     mc.getNetManager().setClientEtapas(1, EtapaEnum.INICIO,EtapaEnum.CHINA,EtapaEnum.CONEY);
-		else if (c2 > c1 && c2>num) mc.getNetManager().setClientEtapas(1, EtapaEnum.CONEY,EtapaEnum.INICIO,EtapaEnum.CHINA);
-		else                        mc.getNetManager().setClientEtapas(1, EtapaEnum.CHINA,EtapaEnum.CONEY,EtapaEnum.INICIO);
-			*/
     }
     
     
@@ -294,31 +294,28 @@ public class Principal extends Activity {
 		
 
 		MochilaContents.getInstance().setKid(kidNumber, kidName,kidGroup);
-				/*
-		comenzar.setText("Cancelar conexión");
-		comenzar.setOnClickListener(new View.OnClickListener() {
-			boolean flag=false;
-			public void onClick(View v) {
-				if(flag) return;
-				if(!flag) flag = true;
-				cleanup();
-				comenzar.setText("Comenzar historia");
-				comenzarFlag = false;
-				comenzar.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {comenzarAction();}
-				});
-			}
-		});
-		*/
-		
-		MochilaContents.getInstance().getNetManager().search(new Runnable() {
-			@Override
-			public void run() {
-				isWaiting=true;
-				if(kid1ready && kid2ready)proceed();
-			}
-		});
+		comenzar.setText("Espere, por favor");
+		MochilaContents.getInstance().getNetManager().searchConnect(
+			//Si se conectan
+			new Runnable() {
+				@Override
+				public void run() {
+					isWaiting=true;
+					if(kid1ready && kid2ready)proceed();
+			}},
+			//Si falla la conexion
+			new Runnable() {
+				@Override
+				public void run() {
+					cleanup();
+					comenzar.setText("Comenzar historia");
+					comenzarFlag = false;
+					comenzar.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {comenzarAction();}
+					});
+			}}
+		);
 		Toast.makeText(getApplicationContext(), "Espere mientras se conectan las tablets...", Toast.LENGTH_SHORT).show();
 	}
-
+	
 }

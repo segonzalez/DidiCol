@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent"
+	    android:clickable="true" 
+    android:focusableInTouchMode="true" 
+    android:focusable="true"
+    android:id="@+id/root"
+    >
 	
 	<ImageView   
 	  android:layout_width="fill_parent"
@@ -45,7 +50,7 @@
                android:id="@+id/numKidText"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_above="@+id/load"
+               android:layout_above="@+id/kidNameText"
                android:inputType="none"
                android:textColor="@android:color/black"
                android:textColorHint="@android:color/darker_gray"
@@ -54,6 +59,8 @@
                android:selectAllOnFocus="true"
                android:singleLine="true"
                android:layout_alignLeft="@+id/load"
+               android:padding="10dp"
+               android:layout_marginBottom="10dp"
                android:ems="5" >
            </EditText>
 			      
@@ -70,8 +77,11 @@
                android:selectAllOnFocus="true"
                android:singleLine="true"
                android:background="@android:color/background_light"
-               android:layout_alignLeft="@+id/iniciars"
-               android:ems="10" >
+               android:layout_alignLeft="@+id/load"
+               
+               android:padding="10dp"
+               android:layout_marginBottom="10dp"
+               android:ems="20" >
 
            </EditText>
            
@@ -79,7 +89,7 @@
                android:id="@+id/kidGroupNum"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_above="@+id/load"
+               android:layout_above="@+id/kidNameText"
                android:inputType="none"
                android:textColor="@android:color/black"
                android:textColorHint="@android:color/darker_gray"
@@ -87,7 +97,11 @@
                android:background="@android:color/background_light"
                android:selectAllOnFocus="true"
                android:singleLine="true"
-               android:layout_toRightOf="@+id/kidNameText"
+               android:layout_toRightOf="@+id/numKidText"
+               android:layout_alignLeft="@+id/iniciars"
+               
+               android:padding="10dp"
+               android:layout_marginBottom="10dp"
                android:ems="5" >
            </EditText>
       </RelativeLayout>

@@ -1,19 +1,19 @@
 package com.didithemouse.didicol.etapas;
 
+import java.util.ArrayList;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import com.didithemouse.didicol.DragLayer;
-import com.didithemouse.didicol.Point;
-import com.didithemouse.didicol.StoryRectangle;
-
-import java.util.ArrayList;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.os.Handler;
 import android.widget.Scroller;
+
+import com.didithemouse.didicol.DragLayer;
+import com.didithemouse.didicol.Point;
+import com.didithemouse.didicol.StoryRectangle;
 
 abstract public class EtapaRenderer implements GLSurfaceView.Renderer {
 	// dibujos 3x1

@@ -1,8 +1,6 @@
 package com.didithemouse.didicol;
 
 import java.util.ArrayList;
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +12,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.didithemouse.didicol.network.NetEvent;
+import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 public class PresentationActivity extends Activity{
 	private FrameLayout content = null;
@@ -92,12 +93,13 @@ public class PresentationActivity extends Activity{
 			terminar.setBackgroundResource(R.drawable.flechaespera);
 			terminar.setClickable(false);
 		}		
-
+		
 		if(mc.hasLoaded){
 			ShowContent();
 		}
 		else{
 			content.setBackgroundResource(0);
+			setInstruction();
 		}
 		
 		
@@ -180,7 +182,7 @@ public class PresentationActivity extends Activity{
 		 tabDesarrollo.setBackgroundResource((index==1)? R.drawable.tabdesarrollo : R.drawable.tabdesarrollo_hidden);
 		 tabFin.setBackgroundResource((index==2)? R.drawable.tabfin : R.drawable.tabfin_hidden);
 		 
-		 inputText.setText(mostrarOriginal?mc.getTextOriginal(index):mc.getText(index));
+		 inputText.setText(mostrarOriginal?mc.getTextOriginal(index):mc.getTextEdited(index));
 		 
 		 int color = 0xFFFFFFFF;
 		 if(index == 0) {color = (  0xFFFF4838 ); }
@@ -203,59 +205,72 @@ public class PresentationActivity extends Activity{
 		 tabOriginal.setBackgroundResource(val? R.drawable.taboriginal : R.drawable.taboriginal_hidden);
 		 setStoryIndex(storyIndex);
 	 }
-		@Override
-		public void onBackPressed() {
-		}
-		
-		
-		
-		
-		boolean isWaiting = false;
-		boolean kid1ready=false, kid2ready = false;
-		public void changetab(){
 
-			storyIndex = storyIndex+1;
-			if(mc.getEtapa(mc.LECTURA).ordinal()%3 == storyIndex){
-				terminar.setClickable(true);
-				terminar.setBackgroundResource(R.drawable.flecha);
-			}
-			else{
-				terminar.setBackgroundResource(R.drawable.flechaespera);
-				terminar.setClickable(false);
-			}
-			setStoryIndex(storyIndex);
-			
-			if(storyIndex == 2){
-				terminar.setClickable(true);
-				terminar.setBackgroundResource(R.drawable.flecha);
-				mc.getNetManager().setReadyListener(new NetEventListener() {
-					@Override
-					public void run(NetEvent ne, int fromClient) {
-						if(fromClient == 0) kid1ready = true;
-						else if(fromClient == 1) kid2ready = true;
-						if(isWaiting && kid1ready && kid2ready)proceed();
-					}
-				});
-				terminar.setOnClickListener(new View.OnClickListener() {
-					boolean flag = true;
-					public void onClick(View v) {
-						if(!flag) return;
-						flag = false;
-						
-						isWaiting = true;
-						mc.getNetManager().sendMessage(new NetEvent("write",true) );
-						terminar.setBackgroundResource(R.drawable.flechaespera);
-						if(kid1ready && kid2ready)proceed();	
-					}
-				});
-			}
-			
+				
+		
+	boolean isWaiting = false;
+	boolean kid1ready=false, kid2ready = false;
+	public void changetab(){
+		storyIndex = storyIndex+1;
+		if(mc.getEtapa(mc.LECTURA).ordinal()%3 == storyIndex){
+			terminar.setClickable(true);
+			terminar.setBackgroundResource(R.drawable.flecha);
 		}
-		public void proceed(){
-			mc.getNetManager().setReadyListener(null);
-			Intent i = new Intent(getApplicationContext(), EndingActivity.class);
-			
-			startActivity(i);
-			finish();
+		else{
+			terminar.setBackgroundResource(R.drawable.flechaespera);
+			terminar.setClickable(false);
 		}
+		setStoryIndex(storyIndex);
+		setInstruction();
+		
+		if(storyIndex == 2){
+			terminar.setClickable(true);
+			terminar.setBackgroundResource(R.drawable.flecha);
+			mc.getNetManager().setReadyListener(new NetEventListener() {
+				@Override
+				public void run(NetEvent ne, int fromClient) {
+					if(fromClient == 0) kid1ready = true;
+					else if(fromClient == 1) kid2ready = true;
+					if(isWaiting && kid1ready && kid2ready)proceed();
+				}
+			});
+			terminar.setOnClickListener(new View.OnClickListener() {
+				boolean flag = true;
+				public void onClick(View v) {
+					if(!flag) return;
+					flag = false;
+					
+					isWaiting = true;
+					mc.getNetManager().sendMessage(new NetEvent("write",true) );
+					terminar.setBackgroundResource(R.drawable.flechaespera);
+					if(kid1ready && kid2ready)proceed();	
+				}
+			});
+		}
+		
+	}
+	
+	public void setInstruction(){
+		String name = "";
+		if(mc.getEtapa(mc.LECTURA).ordinal()%3 == storyIndex)
+			name=mc.getKidName();
+		else if(storyIndex == mc.getNetManager().getKidEtapa(0,mc.LECTURA).ordinal()%3)
+			name = mc.getNetManager().getKidName(0);
+		else if(storyIndex == mc.getNetManager().getKidEtapa(1,mc.LECTURA).ordinal()%3)
+			name = mc.getNetManager().getKidName(1);	
+		((TextView)findViewById(R.id.instruction)).setText("Ahora lee: " + name);
+		
+	}
+	
+	public void proceed(){
+		mc.getNetManager().setReadyListener(null);
+		Intent i = new Intent(getApplicationContext(), ArgumentatorActivity.class);
+		
+		startActivity(i);
+		finish();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	}
 }

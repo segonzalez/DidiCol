@@ -1,0 +1,340 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_black"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="63dip"
+        android:layout_margin="0dip"
+        android:background="@drawable/topleather"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/blank"
+            android:clickable="false" />
+                <Button
+            android:id="@+id/terminar"
+            android:layout_width="250dip"
+            android:layout_height="50dip"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bluebutton"
+            android:clickable="true"
+            android:text="@string/termine"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        >
+
+        <RelativeLayout
+            android:id="@+id/notebookLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+             android:visibility="invisible" >
+
+            <RelativeLayout
+                android:id="@+id/rellayoutnote"
+                android:layout_width="1200dp"
+                android:layout_height="580dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/spiralnotebook" >
+
+                <!--
+            <com.mystictreegames.pagecurl.PageCurlView
+                android:id="@+id/dcgpagecurlPageCurlView1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                 />
+                -->
+
+                <FrameLayout
+                    android:id="@+id/dibujoCanvas"
+                    android:layout_width="500dp"
+                    android:layout_height="382dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/spiral_fondowrite"
+                    android:orientation="horizontal" >
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/letraCanvas"
+                    android:layout_width="560dp"
+                    android:layout_height="600dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="610dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/inputText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="100dp"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="575dp"
+                        android:singleLine="false"
+                        android:textColor="#000000"
+                        android:textSize="25sp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
+                </FrameLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/tabinicio"
+                android:layout_width="42dp"
+                android:layout_height="140dp"
+                android:layout_alignTop="@+id/rellayoutnote"
+                android:layout_marginLeft="-37dp"
+                android:layout_marginTop="90dp"
+                android:layout_toRightOf="@+id/rellayoutnote"
+                android:background="@drawable/tabinicio"
+                android:clickable="true" />
+
+            <Button
+                android:id="@+id/tabdesarrollo"
+                android:layout_width="42dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/tabinicio"
+                android:layout_marginLeft="-37dp"
+                android:layout_toRightOf="@+id/rellayoutnote"
+                android:background="@drawable/tabdesarrollo_hidden"
+                android:clickable="true" />
+
+            <Button
+                android:id="@+id/tabfin"
+                android:layout_width="42dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/tabdesarrollo"
+                android:layout_marginLeft="-37dp"
+                android:layout_toRightOf="@+id/rellayoutnote"
+                android:background="@drawable/tabfin_hidden"
+                android:clickable="true" />
+
+            <Button
+                android:id="@+id/taboriginal"
+                android:layout_width="140dp"
+                android:layout_height="42dp"
+                android:layout_alignRight="@+id/rellayoutnote"
+                android:layout_below="@+id/rellayoutnote"
+                android:layout_marginRight="70dp"
+                android:layout_marginTop="-38dp"
+                android:background="@drawable/taboriginal_hidden"
+                android:clickable="true" />
+
+            <Button
+                android:id="@+id/tabeditado"
+                android:layout_width="140dp"
+                android:layout_height="42dp"
+                android:layout_below="@+id/rellayoutnote"
+                android:layout_marginTop="-38dp"
+                android:layout_toLeftOf="@+id/taboriginal"
+                android:background="@drawable/tabeditado_hidden"
+                android:clickable="true" />
+
+            <Button
+                android:id="@+id/tabcorregido"
+                android:layout_width="140dp"
+                android:layout_height="42dp"
+                android:layout_below="@+id/rellayoutnote"
+                android:layout_marginTop="-38dp"
+                android:layout_toLeftOf="@+id/tabeditado"
+                android:background="@drawable/tabcorregido"
+                android:clickable="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/descLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="visible" >
+
+            <RelativeLayout
+                android:id="@+id/rellayoutnote2"
+                android:layout_width="1200dp"
+                android:layout_height="580dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/spiralnotebook" >
+
+                <TextView
+                    android:id="@+id/kidDataTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="50dp"
+                    android:text="Esta es la descripcion del nino"
+                    android:textIsSelectable="false"
+                    android:textSize="20sp"
+                    android:textColor="#FF0000"
+                    android:textStyle="bold|italic" />
+
+                <FrameLayout
+                    android:id="@+id/letraCanvas2"
+                    android:layout_width="1000dp"
+                    android:layout_height="580dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/kidDataTitle"
+                    android:layout_marginLeft="74dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/inputTextDesc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:cursorVisible="true"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="575dp"
+                        android:singleLine="false"
+                        android:textColor="#000000"
+                        android:textCursorDrawable="@null"
+                        android:textSize="25sp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" >
+                    </EditText>
+                </FrameLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/argLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisible" >
+
+            <RelativeLayout
+                android:id="@+id/rellayoutnote3"
+                android:layout_width="1200dp"
+                android:layout_height="580dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/spiralnotebook" >
+
+                <TextView
+                    android:id="@+id/argTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="50dp"
+                    android:text="Estos son los argumentadores que armaron los niños"
+                    android:textColor="#000000"
+                    android:textIsSelectable="false"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic" />
+
+                <FrameLayout
+                    android:id="@+id/letraCanvas3"
+                    android:layout_width="1000dp"
+                    android:layout_height="580dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/argTitle"
+                    android:layout_marginLeft="74dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/inputTextArg"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:cursorVisible="true"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="575dp"
+                        android:singleLine="false"
+                        android:textColor="#000000"
+                        android:textCursorDrawable="@null"
+                        android:textSize="25sp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" >
+                    </EditText>
+                </FrameLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/drawLayout"
+            android:layout_width="850dp"
+            android:layout_height="670dip"
+            android:layout_marginBottom="50dip"
+            android:layout_marginLeft="150dip"
+            android:layout_marginTop="63dp"
+            android:background="@drawable/spiralnotebook"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/drawTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="10dp"
+                android:text="Dibujo del niño."
+                android:textColor="#000000"
+                android:textIsSelectable="false"
+                android:textSize="25sp"
+                android:textStyle="bold|italic" />
+
+            <FrameLayout
+                android:id="@+id/canvas_framelayout"
+                android:layout_width="810dp"
+                android:layout_height="620dip"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="50dp"
+                android:splitMotionEvents="false" >
+            </FrameLayout>
+        </RelativeLayout>
+        
+        
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/flecha"
+            android:clickable="true"
+            android:splitMotionEvents="false"
+            android:src="@drawable/flecha" />
+
+        <Button
+            android:id="@+id/prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/flechainv"
+            android:clickable="true"
+            android:splitMotionEvents="false"
+            android:src="@drawable/flecha" />
+    </RelativeLayout>
+
+</LinearLayout>

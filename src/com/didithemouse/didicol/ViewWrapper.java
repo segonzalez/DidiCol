@@ -1,13 +1,13 @@
 package com.didithemouse.didicol;
 
-import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.view.View;
 import android.widget.TextView;
+
+import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
 
 public class ViewWrapper {
 	//Cache de la view, se genera solo una vez por Activity.

@@ -3,14 +3,8 @@ package com.didithemouse.didicol;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
-import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,21 +14,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
+import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
+import com.didithemouse.didicol.network.NetEvent;
+import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 public class CreateActivity extends Activity implements OnTouchListener{
 
 	private DragController dragController;
 	private DragLayer dragLayer;
 	FrameLayout fl;
-	private FingerPaint fp;
 	Button next;
 	boolean deleting = false;
 	
 	MochilaContents mc = MochilaContents.getInstance();
-	
 	
 	//Constants
 	final static int canvasHeight = 620;
@@ -51,10 +46,7 @@ public class CreateActivity extends Activity implements OnTouchListener{
 	final static int noteSpiralWidth = 40;
 	
 	final static int objectSize = 115;
-	
-	private RelativeLayout toolbar;
-	private ImageButton[] toolbar_button;
-		
+			
 	private DropPanelWrapper panel = MochilaContents.getInstance().getDropPanel();
 	private ArrayList<ViewWrapper> items = MochilaContents.getInstance().getItems();
 	
@@ -80,6 +72,16 @@ public class CreateActivity extends Activity implements OnTouchListener{
 		
 		updateItemsInDragLayer();
 		
+		dragLayer.setDropRunnable(new Runnable() {
+			@Override
+			public void run() {
+				if(itemsAreInside()){
+			    	next.setVisibility(View.VISIBLE);
+			    }
+			}
+		});
+		
+		
 		mc.getNetManager().setCoordListener(new NetEventListener() {
 			@Override
 			public void run(NetEvent ne,int indx) {
@@ -97,6 +99,11 @@ public class CreateActivity extends Activity implements OnTouchListener{
 			    if(!(v instanceof ExtendedImageView)) return;
 			    panel.getPanelView(dragLayer.getContext()).addObject((ExtendedImageView)v);
 			    
+			    if(ne.cond && itemsAreInside()){
+			    	next.setVisibility(View.VISIBLE);
+			    	mc.getNetManager().setObjectListener(null);
+			    	mc.getNetManager().sendMessage(new NetEvent(0,0f,""));
+			    }
 			}
 		});;
 		
@@ -105,7 +112,17 @@ public class CreateActivity extends Activity implements OnTouchListener{
 			public void run(NetEvent ne, int fromClient) {
 				if(fromClient == 0) kid1ready = true;
 				else if(fromClient == 1) kid2ready = true;
+				next.setVisibility(View.VISIBLE);
 				if(isWaiting && kid1ready && kid2ready)proceed();
+			}
+		});
+		
+		mc.getNetManager().setObjectListener(new NetEventListener() {
+			@Override
+			public void run(NetEvent ne, int fromClient) {
+				if(itemsAreInside()){
+			    	next.setVisibility(View.VISIBLE);
+			    }
 			}
 		});
 		
@@ -113,94 +130,33 @@ public class CreateActivity extends Activity implements OnTouchListener{
 		next.setOnClickListener(new View.OnClickListener() {
 			boolean flag = true;
 			public void onClick(View v) {
-				if(!areItemsInside() || !flag) return;
+				if(!itemsAreInside() || !flag) return;
 				flag = false;
 				isWaiting = true;
-				mc.getNetManager().sendMessage(new NetEvent("write",true) );
+				mc.getNetManager().sendMessage(new NetEvent("create",true) );
 				next.setBackgroundResource(R.drawable.flechaespera);
 				if(kid1ready && kid2ready)proceed();
 			}
 		});
 		next.setClickable(true);
-				
-	
-		FrameLayout fl = (FrameLayout) findViewById(R.id.canvas_framelayout);
-		if(panel!=null)
-		{
-			fp= new FingerPaint(this.getApplicationContext(), dragLayer);
-			fp.setBitmap(panel.getBitmap());
-			fl.addView(fp);
-			fp.setMinimumWidth(canvasWidth);
-			fp.setMinimumHeight(canvasHeight);
-			if(mc.getEtapa(mc.OBJETOS) == EtapaEnum.INICIO) fp.setColor(0xFF008000);
-			else if (mc.getEtapa(mc.OBJETOS) == EtapaEnum.CHINA) fp.setColor(0xFFFF4838);
-			else if (mc.getEtapa(mc.OBJETOS) == EtapaEnum.CONEY) fp.setColor(0xFF3848FF);
-		}
-		
-		
-		/*Aqui seteamos fingerpaint */
-		toolbar = (RelativeLayout) findViewById(R.id.canvas_toolbarlayout);
-		
-		toolbar_button = new ImageButton[]{(ImageButton)(toolbar.getChildAt(0)),
-				(ImageButton)(toolbar.getChildAt(1)),(ImageButton)(toolbar.getChildAt(2))};
-		
-		//Seteamos que hara el click de la MANO
-		toolbar_button[0].setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fp.setDrag(); 
-				setDrag(true);
-				changeSelectedToolbar(0);
-				LogX.i("Create","Se ha utilizado la mano.");
-			    }
-		});
-		
-		//LAPIZ
-		toolbar_button[1].setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				fp.setDraw();	
-				setDrag(false);
-				changeSelectedToolbar(1);
-				LogX.i("Create","Se ha seleccionado el lapiz.");
-			}
-		});
-		
-		//Seteamos que hara el click de la GOMA
-		toolbar_button[2].setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fp.setErase();
-				setDrag(false);
-				changeSelectedToolbar(2);
-				LogX.i("Create","Se ha seleccionado la goma.");
-			    }
-		});
-		changeSelectedToolbar(0);
-		
-		fp.setDrag();
-				
-		//nueva.bringToFront();
+		next.setVisibility(View.INVISIBLE);
 
 		showPanel();		
 	}
-
-	void changeSelectedToolbar(int index)
-	{
-		for (int i=0; i < toolbar_button.length; i++) 
-			toolbar_button[i].setColorFilter(0);
-		toolbar_button[index].setColorFilter(0xC00080FF);
-	}
-	
-
-		
 	
 	public void showPanel()
 	{
 		DropPanel dp = panel.getPanelView(this);
 		
 		dp.setVisibility(View.VISIBLE);
+		dp.setDropRunnable(new Runnable() {
+			@Override
+			public void run() {
+				if(itemsAreInside()){
+					next.setVisibility(View.VISIBLE);
+			    }
+			}
+		});
 				
 
 		dragLayer.addView(dp,0);
@@ -211,8 +167,6 @@ public class CreateActivity extends Activity implements OnTouchListener{
 		
 		
 		dragController.addDropTarget(dp);
-		if(fp != null)
-		fp.setBitmap(panel.getBitmap());
 				
 		updateViewsInPanel();
 		
@@ -226,22 +180,11 @@ public class CreateActivity extends Activity implements OnTouchListener{
     	if(deleting){return true;}
     	//EVITAR Multitouch
     	if(m.getPointerCount() > 1) return true;
-		if(!canDrag) {
-			Matrix translate = new Matrix();
-			translate.setTranslate(v.getLeft()-canvasSelectorWidth-noteSpiralWidth, v.getTop()-topBarHeight);
-			m.transform(translate);
-			return  fp.dispatchTouchEvent(m);
-		}
     	if(m.getAction()==MotionEvent.ACTION_MOVE || m.getAction()==MotionEvent.ACTION_DOWN)
     		return startDrag(v);
     	return false;
 	}
     
-    boolean canDrag=true;
-	void setDrag(boolean value)
-	{
-		canDrag = value;
-	}
     
 	public boolean startDrag (View v)
 	{
@@ -295,7 +238,7 @@ public class CreateActivity extends Activity implements OnTouchListener{
 		
 	}
 	
-	boolean areItemsInside(){
+	boolean itemsAreInside(){
 		for(View v: panel.getItems(dragLayer.getContext())){
 			if (v instanceof ExtendedImageView)
 				panel.getPanelView(dragLayer.getContext()).updateObjectWrapper((ExtendedImageView)v);
@@ -352,12 +295,12 @@ public class CreateActivity extends Activity implements OnTouchListener{
 		TextView kid2text = (TextView)findViewById(R.id.kid2Name);
 		TextView kid3text = (TextView)findViewById(R.id.kid3Name);
 		EtapaEnum etapa1=mc.getEtapa(mc.OBJETOS),
-				etapa2 = mc.getNetManager().getClientEtapas(0,mc.OBJETOS),
-				etapa3 = mc.getNetManager().getClientEtapas(1,mc.OBJETOS);
+				etapa2 = mc.getNetManager().getKidEtapa(0,mc.OBJETOS),
+				etapa3 = mc.getNetManager().getKidEtapa(1,mc.OBJETOS);
 		
 		String text1 = mc.getKidName(),
-			   text2 = mc.getNetManager().getClientKidN(0),
-			   text3 = mc.getNetManager().getClientKidN(1);
+			   text2 = mc.getNetManager().getKidName(0),
+			   text3 = mc.getNetManager().getKidName(1);
 		
 		HashMap<EtapaEnum, TextView> hm = new HashMap<EtapaEnum, TextView>();
 		hm.put(EtapaEnum.INICIO, kid1text);

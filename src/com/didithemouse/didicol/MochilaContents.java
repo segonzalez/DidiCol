@@ -9,8 +9,8 @@ import android.os.Environment;
 import com.didithemouse.didicol.etapas.ChinatownActivity;
 import com.didithemouse.didicol.etapas.ConeyActivity;
 import com.didithemouse.didicol.etapas.EmpireStateActivity;
-import com.didithemouse.didicol.etapas.InicioActivity;
 import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
+import com.didithemouse.didicol.etapas.InicioActivity;
 import com.didithemouse.didicol.network.NetManager;
 
 public class MochilaContents {
@@ -18,9 +18,11 @@ public class MochilaContents {
 	private DropPanelWrapper dropPanel;
 	private ArrayList<ViewWrapper> items;
 	private ArrayList<ViewWrapper> netItems;
-	private String[] texts;
+	private String[] textsCorrected;
+	private String[] textsEdited;
 	private String[] textsOriginal;
 	private String description = null;
+	private String[] argumentatorTexts;
 	
 	//private boolean created;
 	public boolean hasLoaded;
@@ -30,28 +32,14 @@ public class MochilaContents {
 	private int kidGroup = 0;
 	private String dirName = "" ;
 	//private String RCSdir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/My SugarSync Folders/My SugarSync/RC-Write/";
-	private String RCSdir = Environment.getExternalStorageDirectory().getAbsolutePath() +"/TestWrite/";
+	private String RCSdir = Environment.getExternalStorageDirectory().getAbsolutePath() +"/TestDidiCol/";
 	
 	public EtapaEnum [] etapa;
 	
 	//Deshabilita log, guardado, etc. para debug.
 	public static final boolean SAVING  = true;
 	public static final boolean LOGGING = false;
-	public static final boolean SKIP_OBJECTS = true;
-	public static final boolean SKIP_MAP     = true;
-	
-	public static int numStages = 4;
-	private int visitedPlaces = 0;
-	public int getVisitedPlaces()
-	{
-		visitedPlaces = 0;
-		if(EmpireStateActivity.visitedFlag) visitedPlaces++;
-		if(ConeyActivity.visitedFlag ) visitedPlaces++;
-		if(InicioActivity.visitedFlag) visitedPlaces++;
-		if(ChinatownActivity.visitedFlag ) visitedPlaces++;
-		return visitedPlaces;
-	}
-	
+	public static final boolean SKIP_OBJECTS = false;
 	
 	private static MochilaContents INSTANCE = new MochilaContents();
 	private MochilaContents() {
@@ -114,18 +102,25 @@ public class MochilaContents {
 		netItems.clear();
 	}
 	
-	//public boolean isCreated() { return created;	}
-	//public void setCreated(boolean created) {	this.created = created; }
-	
-	public void setText(int index, String text)
+	public void setTextCorrected(int index, String text)
 	{
-		if(texts == null) texts = new String[] {"","",""};
-		texts[index%3] = text;
+		if(textsCorrected == null) textsCorrected = new String[] {"","",""};
+		textsCorrected[index%3] = text;
 	}
-	public String getText(int index)
+	public String getTextCorrected(int index)
 	{
-		if(texts == null) texts = new String[] {"","",""};
-		return texts[index%3];
+		if(textsCorrected == null) textsCorrected = new String[] {"","",""};
+		return textsCorrected[index%3];
+	}
+	public void setTextEdited(int index, String text)
+	{
+		if(textsEdited == null) textsEdited = new String[] {"","",""};
+		textsEdited[index%3] = text;
+	}
+	public String getTextEdited(int index)
+	{
+		if(textsEdited == null) textsEdited = new String[] {"","",""};
+		return textsEdited[index%3];
 	}
 	public String getTextOriginal(int index)
 	{
@@ -137,11 +132,17 @@ public class MochilaContents {
 		if(textsOriginal == null) textsOriginal = new String[] {"","",""};
 		textsOriginal[index%3] = text;
 	}
-	public String[] getTexts(){ return texts;}
+	public String[] getTextsCorrected(){ return textsCorrected;}
+	public String[] getTextsEdited(){ return textsEdited;}
 	public String[] getTextsOriginal(){ return textsOriginal;}
-	public void cloneTexts(){
+	
+	public void cloneTextsOriginal(){
 		for(int i =0; i<3; i++)
-		textsOriginal[i]=texts[i];
+		textsOriginal[i]=textsEdited[i];
+	}
+	public void cloneTextsCorrected(){
+		for(int i =0; i<3; i++)
+		textsCorrected[i]=textsEdited[i];
 	}
 	
 	public void setDescription(String _description)
@@ -152,6 +153,11 @@ public class MochilaContents {
 	{
 		return description;
 	}
+	
+	public void setArgumentatorTexts(String[] _texts){argumentatorTexts=_texts;}
+	public String[] getArgumentatorTexts(){
+		if(argumentatorTexts == null) argumentatorTexts=new String[]{"","",""};
+		return argumentatorTexts;}
 	
 	public void cleanPanels()
 	{
@@ -216,6 +222,12 @@ public class MochilaContents {
 		if(_c != null)
 			netManager = new NetManager(_c);
 		
+
+		kidNumber = 0;
+		kidName = "";
+		kidGroup = 0;
+		dirName = "" ;
+		
 		Saver.clear();
 		if (dropPanel != null)
 			dropPanel.killPanel(true);
@@ -227,15 +239,14 @@ public class MochilaContents {
 		
 		items = new ArrayList<ViewWrapper>();
 		dropPanel = new DropPanelWrapper();
-		texts = new String[] {"","",""};
+		textsCorrected = new String[] {"","",""};
+		textsEdited = new String[] {"","",""};
 		textsOriginal= new String[] {"","",""};
 		etapa = new EtapaEnum[3];
 		//created = false;
 		hasLoaded=false;
 		
 		description="";
-		
-		visitedPlaces = 1;
 				
 		InicioActivity.visitedFlag=false;
 		EmpireStateActivity.visitedFlag = false;

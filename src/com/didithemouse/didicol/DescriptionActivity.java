@@ -2,15 +2,11 @@ package com.didithemouse.didicol;
 
 import java.util.ArrayList;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-
-import com.didithemouse.didicol.R;
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
-
+import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.didithemouse.didicol.network.NetEvent;
+import com.didithemouse.didicol.network.NetManager.NetEventListener;
 
 public class DescriptionActivity extends Activity {
 
@@ -41,7 +40,6 @@ public class DescriptionActivity extends Activity {
 
 		setContentView(R.layout.description);
 		
-		MochilaContents mc = MochilaContents.getInstance();
 		ArrayList<ViewWrapper> wrappers = mc.getItems();
 		for(ViewWrapper w : wrappers){
 			mc.getNetManager().sendMessage(new NetEvent(w.getDrawableID(),w.getScaleFactor(),w.getEtapa().toString()));
@@ -56,9 +54,16 @@ public class DescriptionActivity extends Activity {
 			}
 		});
 		
+		View bg = findViewById(R.id.root);
+		bg.setOnTouchListener(new View.OnTouchListener() {
+		    @Override
+		    public boolean onTouch(View v, MotionEvent event) {
+				hidekeyboard();return false;
+			}
+		});	
+		
 		inputText = (EditText) findViewById(R.id.inputText);
 		instruction=(TextView) findViewById(R.id.instruction);
-		instruction.setClickable(false);
 		instruction.setFocusable(false);
 		instruction.setFocusableInTouchMode(false);
 
@@ -87,6 +92,16 @@ public class DescriptionActivity extends Activity {
 			}
 		});		
 		
+		mc.getNetManager().setTextListener(new NetEventListener() {
+			@Override
+			public void run(NetEvent ne, int fromClient) {
+				if(mc.getNetManager().getKid(0)==ne.i1)
+					mc.getNetManager().setKidDescription(0,ne.message);
+				else if (mc.getNetManager().getKid(1)==ne.i1)
+					mc.getNetManager().setKidDescription(1,ne.message);
+			}
+		});
+		
 	}
 	
 	public void finishEdit()
@@ -99,9 +114,10 @@ public class DescriptionActivity extends Activity {
 		
 		MochilaContents.getInstance().setDescription(inputText.getText().toString());
 		instruction.setText("Apóyate en lo que escribiste para contarle a tu grupo lo que leíste, además abajo están los objetos que recogiste.");
-		inputText.setClickable(false);
 		inputText.setFocusable(false);
 		inputText.setFocusableInTouchMode(false);
+		
+		mc.getNetManager().sendMessage(new NetEvent(mc.getKidNumber(),mc.getDescription(),0));
 				
 		terminar.setOnClickListener(new View.OnClickListener() {
 			boolean flag = true;
@@ -137,6 +153,12 @@ public class DescriptionActivity extends Activity {
 			
 	}
 
+	void hidekeyboard(){
+		 View ib = getCurrentFocus();
+		 if(ib != null)
+			((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE)).
+	        	hideSoftInputFromWindow(ib.getWindowToken(), 0);
+	 }
 		
 	@Override
 	public void onBackPressed() {}
@@ -145,6 +167,8 @@ public class DescriptionActivity extends Activity {
 	boolean kid1ready=false, kid2ready = false;
 	public void proceed(){
 		mc.getNetManager().setReadyListener(null);
+		mc.getNetManager().setObjectListener(null);
+		mc.getNetManager().setTextListener(null);
 		Intent i = new Intent(getApplicationContext(), CreateActivity.class);
 		//LogX.i("Create","Ha comenzado la create.");
 		startActivity(i);

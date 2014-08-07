@@ -1,10 +1,10 @@
 package com.didithemouse.didicol.etapas;
 
-import com.didithemouse.didicol.R;
-
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
+
+import com.didithemouse.didicol.R;
 
 public class InicioRenderer extends EtapaRenderer implements GLSurfaceView.Renderer {
 	

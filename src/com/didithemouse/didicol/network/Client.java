@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.didithemouse.didicol.MochilaContents;
 import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
-import com.didithemouse.didicol.network.NetEvent;
 
 public class Client{
 
@@ -21,6 +20,7 @@ public class Client{
 	int port = 3389;
 	int kid = 0;
 	String kidName = "";
+	String description = "";
 	
 	
 	ObjectOutputStream objectOutputStream = null;
@@ -49,6 +49,9 @@ public class Client{
 		if(etapas != null) return etapas[index];
 		return EtapaEnum.INICIO;
 	}
+	
+	public void setDescription(String desc){if(desc!=null) description = desc;}
+	public String getDescription(){return description;}
 	
 	public boolean isWorking(){
 		return isWorking;

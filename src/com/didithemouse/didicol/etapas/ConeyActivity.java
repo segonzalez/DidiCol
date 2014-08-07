@@ -1,12 +1,11 @@
 package com.didithemouse.didicol.etapas;
 
-import com.didithemouse.didicol.R;
-import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
-
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.didithemouse.didicol.MyAbsoluteLayout.LayoutParams;
+import com.didithemouse.didicol.R;
 
 public class ConeyActivity extends EtapaActivity implements
 		View.OnTouchListener {

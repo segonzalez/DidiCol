@@ -73,6 +73,7 @@ public class Saver {
 		Element root = doc.createElement("savedFile");
 		root.setAttribute("kidNumber", "" + mc.getKidNumber());
 		root.setAttribute("kidName", mc.getKidName());
+		root.setAttribute("kidGroup", mc.getKidGroup()+"");
 		doc.appendChild(root);
 		
 		Element flags = doc.createElement("visitedFlags");
@@ -85,6 +86,10 @@ public class Saver {
 		Element lastActivity = doc.createElement("lastActivity");
 		lastActivity.setAttribute("last", fromActivity.name());
 		root.appendChild(lastActivity);
+		
+		Element description = doc.createElement("description");
+		description.setAttribute("desc", mc.getDescription());
+		root.appendChild(description);
 		
 		Element mochila = doc.createElement("mochila");
 		root.appendChild(mochila);
@@ -105,11 +110,23 @@ public class Saver {
 		{
 			Element text = doc.createElement("text");
 			text.setAttribute("index", i+"");
-			text.setAttribute("value", mc.getTexts()[i]);
+			text.setAttribute("valueCorrected", mc.getTextsCorrected()[i]);
+			text.setAttribute("valueEdited", mc.getTextsEdited()[i]);
 			text.setAttribute("valueOriginal", mc.getTextsOriginal()[i]);
 			texts.appendChild(text);
 		}
 		//
+		Element argTexts = doc.createElement("argTexts");
+		root.appendChild(argTexts);
+		for(int i=0; i<3; i++)
+		{
+			Element argText = doc.createElement("argText");
+			argText.setAttribute("index", i+"");
+			argText.setAttribute("value", mc.getArgumentatorTexts()[i]);
+			argTexts.appendChild(argText);
+		}
+		//
+		
 		
 		Element panel = doc.createElement("panel");
 		root.appendChild(panel);
@@ -195,6 +212,7 @@ public class Saver {
 		} catch(Exception e) {return;}
 	}
 	
+	
 	public static ActivityEnum loadPresentation()
 	{
 		MochilaContents mc = MochilaContents.getInstance();
@@ -222,6 +240,8 @@ public class Saver {
 		Element rootNode = doc.getDocumentElement();
 		String kidName = rootNode.getAttribute("kidName");
 		int kidNumber = parseInt(rootNode.getAttribute("kidNumber"));
+		int kidGroup = parseInt(rootNode.getAttribute("kidGroup"));
+		mc.setKid(kidNumber, kidName, kidGroup);
 		
 		Element visitedFlags = getChildrenFromElement(rootNode,"visitedFlags").get(0);
 		InicioActivity.visitedFlag= parseBool(visitedFlags.getAttribute("inicio"));
@@ -231,6 +251,10 @@ public class Saver {
 		
 		Element lastActivity = getChildrenFromElement(rootNode,"lastActivity").get(0);
 		String last = lastActivity.getAttribute("last");
+		
+		Element description = getChildrenFromElement(rootNode,"description").get(0);
+		String desc = description.getAttribute("desc");
+		mc.setDescription(desc);
 		
 		Element mochilaElement = getChildrenFromElement(rootNode,"mochila").get(0);
 		List<Element> itemElement = getChildrenFromElement(mochilaElement,"item");
@@ -248,12 +272,24 @@ public class Saver {
 		for(Element text: textElement)
 		{
 			int id = parseInt(text.getAttribute("index"));
-			String value = text.getAttribute("value");
+			String valueCorrected = text.getAttribute("valueCorrected");
+			String valueEdited = text.getAttribute("valueEdited");
 			String valueOriginal = text.getAttribute("valueOriginal");
-			mc.setText(id, value);
+			mc.setTextEdited(id, valueEdited);
 			mc.setTextOriginal(id, valueOriginal);
+			mc.setTextCorrected(id, valueCorrected);
 		}
 		//
+		Element argTexts = getChildrenFromElement(rootNode,"argTexts").get(0);
+		List<Element> argElement = getChildrenFromElement(argTexts,"argText");
+		for(Element argText: argElement)
+		{
+			int id = parseInt(argText.getAttribute("index"));
+			String valueCorrected = argText.getAttribute("value");
+			mc.getArgumentatorTexts()[id] = valueCorrected;
+		}
+		
+		///
 		
 		
 		Element panelElement = getChildrenFromElement(rootNode,"panel").get(0);

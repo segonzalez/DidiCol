@@ -2,15 +2,12 @@ package com.didithemouse.didicol;
 
 import java.util.ArrayList;
 
-import com.didithemouse.didicol.CreateActivity;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 public class DropPanel extends DragLayer {
@@ -50,7 +47,7 @@ public class DropPanel extends DragLayer {
 		vw.setDisplayed(wasDisplayed);
 		wrappers.add(vw);
 		
-		upgradeNet(x - xOffset,y - yOffset,xOffset,yOffset,dragInfo);
+		upgradeNet(x - xOffset,y - yOffset,xOffset,yOffset,dragInfo,true);
 	}
 	
 	public void addObject(ExtendedImageView v) {
@@ -110,7 +107,7 @@ public class DropPanel extends DragLayer {
 	public void onDragOver(DragSource source, int x, int y, int xOffset,
 			int yOffset, DragView dragView, Object dragInfo) {
 		MyAbsoluteLayout.LayoutParams lp = (MyAbsoluteLayout.LayoutParams)this.getLayoutParams();
-		upgradeNet(x-xOffset+lp.x,y-yOffset+lp.y,xOffset,yOffset,dragInfo);
+		upgradeNet(x-xOffset+lp.x,y-yOffset+lp.y,xOffset,yOffset,dragInfo,false);
 }
 	@Override
 	public void onDragExit(DragSource source, int x, int y, int xOffset,

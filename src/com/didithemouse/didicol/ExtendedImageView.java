@@ -1,9 +1,9 @@
 package com.didithemouse.didicol;
 
-import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
-
 import android.content.Context;
 import android.widget.ImageView;
+
+import com.didithemouse.didicol.etapas.EtapaActivity.EtapaEnum;
 
 public class ExtendedImageView extends ImageView {
 	

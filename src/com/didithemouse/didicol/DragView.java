@@ -1,6 +1,5 @@
 package com.didithemouse.didicol;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -21,7 +20,6 @@ import android.view.WindowManager;
  *
  */
 
-@SuppressLint("ViewConstructor")
 public class DragView extends View 
 {
     // Number of pixels to add to the dragged item for scaling.  Should be even for pixel alignment.

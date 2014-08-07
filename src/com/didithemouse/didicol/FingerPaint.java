@@ -1,8 +1,5 @@
 package com.didithemouse.didicol;
 
-import com.didithemouse.didicol.network.NetEvent;
-import com.didithemouse.didicol.network.NetManager.NetEventListener;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,14 +23,8 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
     private Canvas  mCanvas;
     private Path    mPath;
     private Paint   mBitmapPaint;
-    private DragLayer dl;
     
-    private FingerPaint fp = null;
-    
-    Paint sPaint;
-    float sX,sY;
-    
-    private Paint       mPaint;
+    private Paint mPaint;
     
     private SurfaceHolder sh;
     
@@ -42,10 +33,8 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
     int color = 0xFF000000;
     int clearColor = 0x00FFFFFF;
     
-    public FingerPaint(Context c, DragLayer _dl) {
+    public FingerPaint(Context c) {
         super(c);
-        fp = this;
-        dl = _dl;
         sh = getHolder();
         sh.addCallback(this);
         this.setZOrderOnTop(true);
@@ -62,27 +51,13 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(12);
+        mPaint.setStrokeWidth(8);
                 
         isPainting = true;
         
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
         mCanvas = new Canvas();
-        
-        sPaint = new Paint();
-        sPaint.setAntiAlias(true);//true);
-        sPaint.setDither(true);//true);
-        sPaint.setStyle(Paint.Style.STROKE);
-        sPaint.setStrokeJoin(Paint.Join.ROUND);
-        sPaint.setStrokeCap(Paint.Cap.ROUND);
-        
-        MochilaContents.getInstance().getNetManager().setDrawListener( new NetEventListener() {
-        	@Override
-        	public void run(NetEvent ne, int i) {
-        		if(fp!=null) fp.getHandler().post(new paintRunnable(ne));
-        	}
-        });
     }
     
     public void setBitmap(Bitmap bm)
@@ -121,27 +96,6 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
     public void setColor(int _color){
     	color = _color;
     }
-    /*
-    public void eraseAll()
-    {
-    	if (runWhenChange != null) runWhenChange.run();
-    	mCanvas.drawColor(clearColor, Mode.MULTIPLY);
-        mCanvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-        Canvas c = sh.lockCanvas();
-        if (c != null)
-        {
-        	c.drawColor(clearColor, Mode.MULTIPLY);
-            c.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-            sh.unlockCanvasAndPost(c);
-        }
-    }*/
-    
-    public void setDrag()
-    {
-        canDrag=true;
-    }
-    
-    
     
     protected void drawx(Canvas canvas){
         if(canvas != null)
@@ -159,8 +113,7 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
 
     MochilaContents mc = MochilaContents.getInstance();
     private void touch_start(float x, float y) {
-    	mc.getNetManager().sendMessage(new NetEvent(color,isPainting,x,y,mX,mY,"down"));
-        mPath.reset();
+    	mPath.reset();
         mPath.moveTo(x, y);
         mX = x;
         mY = y;
@@ -179,10 +132,9 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
         mPaint.setStyle(Style.STROKE);
     }
     private void touch_move(float x, float y) {
-    	mc.getNetManager().sendMessage(new NetEvent(color,isPainting,x,y,mX,mY,"move"));
-            mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
-            mX = x;
-            mY = y;
+    	mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+        mX = x;
+        mY = y;
     }
     private void touch_up() {
     	mPath.lineTo(mX, mY);
@@ -192,12 +144,6 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
         mPath.reset();
     }
 
-
-    Runnable runWhenChange = null;
-    public void setRunWhenChangeRunnable(Runnable _r)
-    {
-    	runWhenChange = _r;
-    }
     
     //Avoid infinite recursion (?)
     MotionEvent me = null;
@@ -206,18 +152,7 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
     	
     	//EVITAR Multitouch
     	if(event.getPointerCount() > 1) return true;
-    	
-
-    	
-        if (canDrag) 
-        {
-        	if (me == event) return true;
-        	me = event;
-        	if (runWhenChange != null && (MotionEvent.ACTION_CANCEL == event.getAction() || MotionEvent.ACTION_UP == event.getAction()))
-        		runWhenChange.run();
-        	return dl.dispatchTouchEvent(event);
-        }
-    	
+    	    	
     	float x = event.getX();
         float y = event.getY();
 
@@ -237,7 +172,6 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_UP:
                 touch_up();
                 drawx(sh.lockCanvas());
-            	if (runWhenChange != null) runWhenChange.run();
                 break;
         }
         return true;
@@ -267,44 +201,4 @@ public class FingerPaint extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
     
-	class paintRunnable implements Runnable{
-		NetEvent ne;
-		public paintRunnable(NetEvent _ne) {
-			ne = _ne;
-		}
-		public void run(){
-			if(ne == null) return;
-    		int colorx=ne.i1; boolean painting=ne.cond;
-
-    		sPaint.setColor(painting?colorx:clearColor);
-    		sPaint.setStrokeWidth(painting?8:31);
-    		sPaint.setXfermode(painting? null:new PorterDuffXfermode(Mode.SRC));
-
-    		float x=ne.f1, y=ne.f2, sX=ne.f3, sY=ne.f4;
-
-    		Canvas canvas = sh.lockCanvas();
-    		if(canvas != null)
-    		{
-    			canvas.drawColor(clearColor, Mode.MULTIPLY);
-    			canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-    			if (ne.message.equals("down")){
-                    sPaint.setStyle(Style.FILL);
-    				canvas.drawCircle(x, y, sPaint.getStrokeWidth()/2, sPaint);
-    				mCanvas.drawCircle(x, y, sPaint.getStrokeWidth()/2, sPaint);
-    				sPaint.setStyle(Style.STROKE);
-    			}
-    			else if (ne.message.equals("move")){
-    				Path sPath = new Path();
-    				sPath.moveTo(x,y);
-    				sPath.quadTo((x + sX)/2, (y + sY)/2, sX ,sY );
-    				mCanvas.drawPath(sPath, sPaint);
-    				canvas.drawPath(sPath, sPaint);
-    				//mCanvas.drawLine(sX,sY,x,y, sPaint);
-    				//canvas.drawLine(sX,sY,x,y, sPaint);
-    			}
-    			// cleanButton(canvas);
-    			sh.unlockCanvasAndPost(canvas);
-    		}
-		}
-	}
 }

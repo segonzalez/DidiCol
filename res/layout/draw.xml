@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/canvas_big_draglayer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2D585"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/canvas_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#C2A46F"
+        android:splitMotionEvents="false" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="63dip"
+            android:layout_margin="0dip"
+            android:background="@drawable/topleather"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/kids_rellayout"
+            android:layout_width="150dp"
+            android:layout_height="670dip"
+            android:layout_marginTop="63dp"
+            android:background="#f8e5af"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/canvas_rellayout"
+            android:layout_width="850dp"
+            android:layout_height="670dip"
+            android:layout_marginBottom="50dip"
+            android:layout_marginLeft="150dip"
+            android:layout_marginTop="63dp"
+            android:background="@drawable/spiralnotebook"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false" >
+
+            <TextView
+                android:id="@+id/instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="10dp"
+                android:text="Haz un dibujo que represente la historia que escribieron."
+                android:textColor="#000000"
+                android:textIsSelectable="false"
+                android:textSize="25sp"
+                android:textStyle="bold|italic" />
+
+            <FrameLayout
+                android:id="@+id/canvas_framelayout"
+                android:layout_width="810dp"
+                android:layout_height="620dip"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="50dp"
+                android:splitMotionEvents="false" >
+            </FrameLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/canvas_toolbarlayout"
+            android:layout_width="850dip"
+            android:layout_height="50dip"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="150dip"
+            android:background="#f8e5af"
+            android:splitMotionEvents="false" >
+
+            <ImageButton
+                android:id="@+id/toolbar_pencil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="5dp"
+                android:splitMotionEvents="false"
+                android:src="@drawable/button_pencil_new" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/toolbar_pencil"
+                android:splitMotionEvents="false"
+                android:src="@drawable/button_eraser_new" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/objectscanvas2"
+            android:layout_width="280dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="63dp"
+            android:background="#f8e5af"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/terminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/flecha"
+            android:clickable="true"
+            android:splitMotionEvents="false"
+            android:src="@drawable/flecha" />
+    </RelativeLayout>
+
+</LinearLayout>

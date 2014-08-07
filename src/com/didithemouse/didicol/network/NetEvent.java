@@ -3,10 +3,10 @@ package com.didithemouse.didicol.network;
 import java.io.Serializable;
 
 public class NetEvent implements Serializable{
-	public static enum EventEnum {coordinate, object, text,newConnection, draw, isReady};
+	public static enum EventEnum {coordinate, object, text,newConnection, isReady,argumentator};
 	private static final long serialVersionUID = 1L;
 	public int i1,i2,i3;
-	public float f1,f2,f3,f4;
+	public float f1,f2;
 	public boolean cond;
 	public String message ="";
 	public EventEnum type;
@@ -25,15 +25,16 @@ public class NetEvent implements Serializable{
 		message=kidName;i1=kidNum;i2=kidGroup;
 	}
 	
-	public NetEvent(int color,boolean isPainting, float x, float y, float sX, float sY, String event){
-		type = EventEnum.draw;
-		f1=x;f2=y;f3=sX;f4=sY;i1=color;cond=isPainting;message=event;
-	}
 	
-	public NetEvent(int textNo, String text)
+	public NetEvent(int textNo, String text, int position)
 	{
 		type = EventEnum.text;
-		i1=textNo; message=text;
+		i1=textNo; message=text; i2=position;
+	}
+	
+	public NetEvent(int selectorNumber, int selection){
+		type=EventEnum.argumentator;
+		i1=selectorNumber; i2=selection;
 	}
 	
 	public NetEvent(String activity, boolean isReady){
